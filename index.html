@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fractional Real Estate ROI Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .calculator-container {
+      background-color: #ffffff;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 2rem;
+      animation: slideDown 1s ease-in-out;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin: 1rem 0 0.3rem;
+      color: #333;
+      animation: fadeInUp 0.7s ease;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.7rem;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: #4caf50;
+      outline: none;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+    }
+
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      background: #4caf50;
+      color: #fff;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.4s ease;
+      animation: pulse 2s infinite;
+    }
+
+    button:hover {
+      background: #388e3c;
+    }
+
+    .results {
+      margin-top: 2rem;
+      background: #f1f8e9;
+      padding: 2rem;
+      border-radius: 15px;
+      animation: fadeIn 1.2s ease-in-out;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .results p {
+      font-size: 1rem;
+      margin: 0.8rem 0;
+      color: #2e7d32;
+      animation: fadeInUp 0.6s ease-in-out;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+
+    @keyframes slideDown {
+      from {opacity: 0; transform: translateY(-40px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes pulse {
+      0% {box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);}
+      70% {box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);}
+      100% {box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <h1>Fractional Real Estate ROI Calculator</h1>
+
+    <label>Property Price (₹):</label>
+    <input type="number" id="price" value="6000000">
+
+    <label>Investor Contribution %:</label>
+    <input type="number" id="contribution" value="10">
+
+    <label>Monthly Rent (₹):</label>
+    <input type="number" id="rent" value="20000">
+
+    <label>Monthly Expenses (₹):</label>
+    <input type="number" id="expenses" value="3000">
+
+    <label>Projected Sale Price after 5 Years (₹):</label>
+    <input type="number" id="salePrice" value="8500000">
+
+    <button onclick="calculateROI()">Calculate ROI</button>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    function calculateROI() {
+      const price = parseFloat(document.getElementById("price").value);
+      const contribution = parseFloat(document.getElementById("contribution").value);
+      const rent = parseFloat(document.getElementById("rent").value);
+      const expenses = parseFloat(document.getElementById("expenses").value);
+      const salePrice = parseFloat(document.getElementById("salePrice").value);
+
+      const invested = price * (contribution / 100);
+      const netMonthly = rent - expenses;
+      const netAnnual = netMonthly * 12;
+      const netYield = (netAnnual / price) * 100;
+      const capitalGain = salePrice - price;
+      const shareGain = capitalGain * (contribution / 100);
+      const totalReturn = (netAnnual * 5) + shareGain;
+      const roiFive = (totalReturn / invested) * 100;
+      const annualized = (Math.pow((1 + roiFive / 100), 1 / 5) - 1) * 100;
+
+      document.getElementById("results").innerHTML = `
+        <h2>📈 Results:</h2>
+        <p><strong>Investor Capital Invested:</strong> ₹${invested.toFixed(2)}</p>
+        <p><strong>Net Monthly Income:</strong> ₹${netMonthly.toFixed(2)}</p>
+        <p><strong>Net Annual Income:</strong> ₹${netAnnual.toFixed(2)}</p>
+        <p><strong>Net Yield:</strong> ${netYield.toFixed(2)}%</p>
+        <p><strong>Capital Gain:</strong> ₹${capitalGain.toFixed(2)}</p>
+        <p><strong>Investor Share of Gain:</strong> ₹${shareGain.toFixed(2)}</p>
+        <p><strong>Total Return (5 Years):</strong> ₹${totalReturn.toFixed(2)}</p>
+        <p><strong>ROI (5 Years):</strong> ${roiFive.toFixed(2)}%</p>
+        <p><strong>Annualized ROI:</strong> ${annualized.toFixed(2)}%</p>
+      `;
+    }
+  </script>
+</body>
+</html>
